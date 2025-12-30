@@ -1,9 +1,11 @@
 package com.yangyang.whatcanieat.entity;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.time.LocalDateTime;
 @Data
+@TableName("user")
 public class User {
     private int uId;
     private String uName;
