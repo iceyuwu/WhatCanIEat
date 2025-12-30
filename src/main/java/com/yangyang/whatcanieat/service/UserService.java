@@ -7,14 +7,6 @@ import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserService {
-
-    @Resource
-    private UserMapper userMapper;
-
-    public User getUserById(int id){
-        User user1 = userMapper.selectById(id);
-        return user1;
-    }
+public class UserService extends ServiceImpl<UserMapper, User> {
 
 }
