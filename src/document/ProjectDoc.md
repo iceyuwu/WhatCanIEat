@@ -16,6 +16,7 @@
 - SpringAI(待定)
 - Mybatis
 - MybatisPlus
+- Swagger(接口文档)
 - MySQL
 
 ## 开发工具
@@ -26,3 +27,8 @@
 - Postman（接口测试工具）
 - DataGrip（数据库开发）
 - Git/GitHub（版本管理/代码托管平台）
+
+## 接口设计
+> http://localhost:8080/swagger-ui/index.html
+
+## 数据库设计
