@@ -9,7 +9,7 @@ spring:
     password: root
   ai:
     openai:
-      api-key:    # 换成你的 DeepSeek Key
+      api-key:    #千万不要将DeepSeekAPIKey提交到github上！！！
       base-url: https://api.deepseek.com
       chat:
         options:
