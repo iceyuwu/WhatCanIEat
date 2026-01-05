@@ -9,7 +9,7 @@ spring:
     password: root
   ai:
     openai:
-      api-key: sk-ff4fe192448c4a56bbcb02956bc7e75c   # 换成你的 DeepSeek Key
+      api-key:    # 换成你的 DeepSeek Key
       base-url: https://api.deepseek.com
       chat:
         options:
