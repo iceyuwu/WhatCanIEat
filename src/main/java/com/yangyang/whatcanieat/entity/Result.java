@@ -1,0 +1,24 @@
+package com.yangyang.whatcanieat.entity;
+
+public class Result<T> {
+
+    public int code;
+    public String msg;
+    public T data;
+
+    public static <T> Result<T> ok(T data) {
+        Result<T> r = new Result<>();
+        r.code = 0;
+        r.msg = "ok";
+        r.data = data;
+        return r;
+    }
+
+    public static <T> Result<T> fail(String msg) {
+        Result<T> r = new Result<>();
+        r.code = -1;
+        r.msg = msg;
+        r.data = null;
+        return r;
+    }
+}
