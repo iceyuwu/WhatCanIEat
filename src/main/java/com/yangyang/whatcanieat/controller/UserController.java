@@ -9,6 +9,8 @@ import jakarta.annotation.PostConstruct;
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -29,6 +31,13 @@ public class UserController {
         return userPage;
     }
 
+
+    /**
+     * 登录接口
+     * @param account 账号
+     * @param password 密码
+     * @return 用户信息
+     */
     @PostMapping("/login")
     public Result<User> login(@RequestParam String account , @RequestParam String password){
         //1.根据账户查询数据库
@@ -47,5 +56,75 @@ public class UserController {
         }else{
             return Result.fail("登录失败");
         }
+    }
+
+    /**
+     * 注册接口
+     * @param account
+     * @param password
+     * @param name
+     * @return
+     */
+    @PostMapping("/register")
+    public Result<User> register(@RequestParam String account , @RequestParam String password , @RequestParam String name){
+        //1.接受新账号新密码
+        //2.检查新账号是否已存在
+        QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
+        userQueryWrapper
+                .eq("account",account);
+        User userInDB = userService.getOne(userQueryWrapper);
+        if(userInDB != null){
+            return Result.fail("账号已存在！请尝试登录。");
+        }
+        //3.在数据库中保存
+        User userSave = new User();
+        userSave.setAccount(account);
+        userSave.setPassword(password);
+        userSave.setName(name);
+        userSave.setCreateTime(LocalDateTime.now());
+        userSave.setUpdateTime(LocalDateTime.now());
+        boolean save = userService.save(userSave);
+        //4.再次查询用户信息
+        QueryWrapper<User> userQueryWrapperNew = new QueryWrapper<>();
+        userQueryWrapperNew
+                .eq("account",account);
+        userSave = userService.getOne(userQueryWrapper);
+        return Result.ok(userSave);
+    }
+
+    /**
+     * 展示用户界面
+     * @param id 用户id
+     * @return 用户信息
+     */
+    @PostMapping("/userinfo")
+    public Result<User> userInformation(@RequestParam int id){
+        //1.根据用户id查询用户信息
+        QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
+        userQueryWrapper
+                .eq("id",id);
+        User userInDB = userService.getOne(userQueryWrapper);
+        if(userInDB != null){
+            return Result.fail("未查找到用户。");
+        }
+        //2.返回用户信息
+        return Result.ok(userInDB);
+    }
+
+
+    @PostMapping("/deleteuser")
+    public Result<User> deleteuser(@RequestParam String account , @RequestParam String password){
+        //1.根据账密判断是否是用户本人操作
+        QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
+        userQueryWrapper
+                .eq("account",account)
+                .eq("password",password);
+        User user = userService.getOne(userQueryWrapper);
+        if (user == null){
+            return Result.fail("删除失败！账户或密码出错。");
+        }
+        //2.删除账户
+        userService.removeById(user.getId());
+        return Result.ok(user, "删除成功！");
     }
 }

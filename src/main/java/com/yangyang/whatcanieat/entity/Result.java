@@ -14,6 +14,14 @@ public class Result<T> {
         return r;
     }
 
+    public static <T> Result<T> ok(T data,String msg) {
+        Result<T> r = new Result<>();
+        r.code = 0;
+        r.msg = msg;
+        r.data = data;
+        return r;
+    }
+
     public static <T> Result<T> fail(String msg) {
         Result<T> r = new Result<>();
         r.code = -1;
