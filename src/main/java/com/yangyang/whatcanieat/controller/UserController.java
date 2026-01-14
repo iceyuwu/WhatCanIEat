@@ -60,10 +60,10 @@ public class UserController {
 
     /**
      * 注册接口
-     * @param account
-     * @param password
-     * @param name
-     * @return
+     * @param account 账号
+     * @param password 密码
+     * @param name 用户名
+     * @return 用户信息
      */
     @PostMapping("/register")
     public Result<User> register(@RequestParam String account , @RequestParam String password , @RequestParam String name){
@@ -93,7 +93,7 @@ public class UserController {
     }
 
     /**
-     * 展示用户界面
+     * 展示用户界面接口
      * @param id 用户id
      * @return 用户信息
      */
@@ -111,7 +111,12 @@ public class UserController {
         return Result.ok(userInDB);
     }
 
-
+    /**
+     *删除接口
+     * @param account 账号
+     * @param password 密码
+     * @return 成功信息
+     */
     @PostMapping("/deleteuser")
     public Result<User> deleteuser(@RequestParam String account , @RequestParam String password){
         //1.根据账密判断是否是用户本人操作
@@ -127,4 +132,23 @@ public class UserController {
         userService.removeById(user.getId());
         return Result.ok(user, "删除成功！");
     }
+
+    /**
+     * 更新用户信息接口
+     * @param user 用户
+     * @return 更新后的用户信息
+     */
+    @PostMapping("/update")
+    public Result<User> updateuser(@RequestBody User user){
+        //1.传入用户对象
+        //2.修改用户信息
+        userService.updateById(user);
+        //3.查找出更新后的用户数据，返回
+        user = userService.getById(user.getId());
+        return Result.ok(user);
+    }
+
+    //TODO 用户忘记密码找回接口
+
+
 }
