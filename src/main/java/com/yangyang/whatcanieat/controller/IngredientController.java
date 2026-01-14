@@ -75,7 +75,7 @@ public class IngredientController {
      * @param id 原料id
      * @return 原料信息
      */
-    @PostMapping("/search/Id")
+    @PostMapping("/search/id")
     public Result<Ingredient> searchById(@RequestParam int id){
         //1.根据id查找原料
         Ingredient ingredient = ingredientService.getById(id);
