@@ -142,6 +142,7 @@ public class UserController {
     public Result<User> updateuser(@RequestBody User user){
         //1.传入用户对象
         //2.修改用户信息
+        user.setUpdateTime(LocalDateTime.now());
         userService.updateById(user);
         //3.查找出更新后的用户数据，返回
         user = userService.getById(user.getId());
