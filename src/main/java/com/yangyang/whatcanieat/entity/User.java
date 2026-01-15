@@ -9,7 +9,8 @@ import java.time.LocalDateTime;
 @Data
 @TableName("users")
 public class User {
-    private long id;
+    @TableId(type = IdType.AUTO)
+    private Long id;
     private String name;
     private String image;
     private String account;
