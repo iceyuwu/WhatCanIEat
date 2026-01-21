@@ -6,6 +6,14 @@ public class Result<T> {
     public String msg;
     public T data;
 
+    public static <T> Result<T> ok(String msg) {
+        Result<T> r = new Result<>();
+        r.code = 0;
+        r.msg = msg;
+        r.data = null;
+        return r;
+    }
+
     public static <T> Result<T> ok(T data) {
         Result<T> r = new Result<>();
         r.code = 0;
