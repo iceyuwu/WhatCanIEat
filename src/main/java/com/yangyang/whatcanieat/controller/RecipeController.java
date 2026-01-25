@@ -67,7 +67,7 @@ public class RecipeController {
     @PostMapping("/add")
     public Result<Recipe> add(@RequestBody Recipe recipe){
         //1.保存菜谱
-        recipe.setUpdateTime(LocalDateTime.now());
+        recipe.setCreateTime(LocalDateTime.now());
         recipe.setUpdateTime(LocalDateTime.now());
         recipeService.save(recipe);
         //2.返回菜谱信息
@@ -136,6 +136,7 @@ public class RecipeController {
 
     @PostMapping("/search/page")
     public Result<Page<Recipe>> page(@RequestParam Integer pageNum , @RequestParam Integer pageSize){
+        System.out.println("hahahahaha");
         //1.创建分页条件
         Page<Recipe> page = new Page<>(pageNum, pageSize);
         //2.分页查询
