@@ -7,7 +7,7 @@ import lombok.Data;
 import org.apache.logging.log4j.message.StringFormattedMessage;
 
 @Data
-@TableName("ingredients")
+@TableName("ingredient")
 public class Ingredient {
     @TableId(type = IdType.AUTO)
     private Long id;
