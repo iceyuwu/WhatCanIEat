@@ -5,11 +5,14 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yangyang.whatcanieat.entity.Result;
 import com.yangyang.whatcanieat.entity.User;
 import com.yangyang.whatcanieat.service.UserService;
+import com.yangyang.whatcanieat.util.JwtUtil;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.Resource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/user")
@@ -17,6 +20,9 @@ public class UserController {
 
     @Resource
     private UserService userService;
+
+    @Autowired
+    private JwtUtil jwtUtil;
 
     @GetMapping("/id/{id}")
     public User getById(@PathVariable int id){
@@ -31,7 +37,6 @@ public class UserController {
         return userPage;
     }
 
-
     /**
      * 登录接口
      * @param account 账号
@@ -39,7 +44,7 @@ public class UserController {
      * @return 用户信息
      */
     @PostMapping("/login")
-    public Result<User> login(@RequestParam String account , @RequestParam String password){
+    public Result<String> login(@RequestParam String account , @RequestParam String password){
         //1.根据账户查询数据库
         QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
         userQueryWrapper
@@ -51,8 +56,9 @@ public class UserController {
         }
         String userPasswordInDB = user.getPassword();
         if (userPasswordInDB.equals(password)){
-            user.setPassword("");
-            return Result.ok(user);
+            //密码正确登录成功
+            String token = jwtUtil.generateToken(user);
+            return Result.loginSuccess(token);
         }else{
             return Result.fail("登录失败");
         }

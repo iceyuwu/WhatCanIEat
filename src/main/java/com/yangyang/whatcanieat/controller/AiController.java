@@ -8,6 +8,7 @@ import com.yangyang.whatcanieat.service.RecipeService;
 import jakarta.annotation.Resource;
 import lombok.RequiredArgsConstructor;
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -43,6 +44,7 @@ public class AiController {
                 .content();
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping(value = "/chat/flux",produces = "text/html;charset=utf-8")
     public Flux<String> chatFlux(@RequestParam String prompt) {
         return chatClient.prompt()
