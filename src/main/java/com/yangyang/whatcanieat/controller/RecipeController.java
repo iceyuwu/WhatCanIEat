@@ -134,6 +134,12 @@ public class RecipeController {
         return Result.ok(recipe);
     }
 
+    /**
+     * 分页查询菜谱接口
+     * @param pageNum 菜谱页数
+     * @param pageSize 展示多少个菜谱
+     * @return
+     */
     @PostMapping("/search/page")
     public Result<Page<Recipe>> page(@RequestParam Integer pageNum , @RequestParam Integer pageSize){
         System.out.println("hahahahaha");
