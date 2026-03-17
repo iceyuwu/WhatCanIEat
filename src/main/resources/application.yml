@@ -1,8 +1,11 @@
+# 服务器端口配置
 server:
   port: 8080
 
 spring:
+  # 数据源（数据库配置）
   datasource:
+    # 驱动名称配置
     driver-class-name: com.mysql.cj.jdbc.Driver
     # 本地数据库
 #    url: jdbc:mysql://localhost:3306/recipe_share?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
@@ -10,9 +13,12 @@ spring:
 #    url: jdbc:mysql://mysql-container:3306/recipe_share?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
     # 本地开发连云服数据库
     url: jdbc:mysql://8.163.57.20:3306/recipe_share?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+    # 数据库用户名
     username: root
-#    password: root
+    # 数据库密码
     password: 123456
+
+  # ai接口相关配置
   ai:
     openai:
       #千万不要将DeepSeekAPIKey提交到github上！！！
@@ -23,7 +29,14 @@ spring:
           model: deepseek-chat
           temperature: 0.7
 
+#mybatis配置
 mybatis-plus:
+  #  指定实体类的包地址
   type-aliases-package: com.yangyang.whatcanieat.entity
   configuration:
+    #开启匹配驼峰命名
     map-underscore-to-camel-case: true
+
+#配置文件上传路径
+file:
+  upload-path: /data/upload/
