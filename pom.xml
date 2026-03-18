@@ -97,6 +97,13 @@
             <version>2.5.0</version>
         </dependency>
 
+    <!-- ftp上传 -->
+        <dependency>
+            <groupId>commons-net</groupId>
+            <artifactId>commons-net</artifactId>
+            <version>3.9.0</version>
+        </dependency>
+
         <!-- AI -->
         <!-- Spring AI OpenAI（用于 DeepSeek） -->
 <!--        <dependency>-->

@@ -13,9 +13,10 @@ import java.time.LocalDateTime;
 public class Recipe {
     @TableId(type = IdType.AUTO)
     private Long id;
+    private Long UId;
     private String name;
     private String text;
-    private Long UId;
+    private String cover;
     private LocalDateTime createTime;
     private LocalDateTime updateTime;
 

@@ -9,14 +9,13 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     # 本地数据库
 #    url: jdbc:mysql://localhost:3306/recipe_share?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
-    # docker配置
-#    url: jdbc:mysql://mysql-container:3306/recipe_share?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
-    # 本地开发连云服数据库
+    # docker配置ysql://mysql-container:3306/recipe_share?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+    # 云服数据库
     url: jdbc:mysql://8.163.57.20:3306/recipe_share?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
     # 数据库用户名
-    username: root
+    username: recipe_share
     # 数据库密码
-    password: 123456
+    password: 1qaz!QAZ
 
   # ai接口相关配置
   ai:
@@ -39,4 +38,13 @@ mybatis-plus:
 
 #配置文件上传路径
 file:
-  upload-path: /data/upload/
+  # 一定要以斜杠 \ 结尾！！！
+#  upload-path: C:\Users\Honmono\Pictures\try\
+  upload-path: /home/admin/resource/pic/
+#配置ftp文件上传
+ftp:
+  host: 8.163.57.20       # FTP 服务器 IP
+  port: 21                  # FTP 端口，默认 21
+  username: recipe_share        # FTP 用户名
+  password: 1qaz!QAZ    # FTP 密码
+  base-path: /pic/

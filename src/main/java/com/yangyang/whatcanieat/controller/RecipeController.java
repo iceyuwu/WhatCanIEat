@@ -1,15 +1,20 @@
 package com.yangyang.whatcanieat.controller;
 
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yangyang.whatcanieat.entity.Recipe;
 import com.yangyang.whatcanieat.entity.RecipeIngredient;
 import com.yangyang.whatcanieat.entity.Result;
+import com.yangyang.whatcanieat.entity.User;
 import com.yangyang.whatcanieat.entity.vo.RecipeVO;
 import com.yangyang.whatcanieat.service.RecipeIngredientService;
 import com.yangyang.whatcanieat.service.RecipeService;
+import com.yangyang.whatcanieat.service.UserService;
 import jakarta.annotation.Resource;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -23,6 +28,8 @@ public class RecipeController {
     private RecipeService recipeService;
     @Resource
     private RecipeIngredientService recipeIngredientService;
+    @Resource
+    private UserService userService;
 
     /**
      * 添加菜谱接口
@@ -66,7 +73,18 @@ public class RecipeController {
      */
     @PostMapping("/add")
     public Result<Recipe> add(@RequestBody Recipe recipe){
+        //0.获取用户信息
+        // 通过SpringSecurity获取用户账号
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userAccount = authentication.getName();
+        QueryWrapper<User> userWrapper = new QueryWrapper<>();
+        userWrapper.eq("account",userAccount);
+        User user = userService.getOne(userWrapper);
+        if (user == null){
+            return Result.fail("用户不存在！");
+        }
         //1.保存菜谱
+        recipe.setUId(user.getId());
         recipe.setCreateTime(LocalDateTime.now());
         recipe.setUpdateTime(LocalDateTime.now());
         recipeService.save(recipe);
@@ -142,7 +160,6 @@ public class RecipeController {
      */
     @PostMapping("/search/page")
     public Result<Page<Recipe>> page(@RequestParam Integer pageNum , @RequestParam Integer pageSize){
-        System.out.println("hahahahaha");
         //1.创建分页条件
         Page<Recipe> page = new Page<>(pageNum, pageSize);
         //2.分页查询
