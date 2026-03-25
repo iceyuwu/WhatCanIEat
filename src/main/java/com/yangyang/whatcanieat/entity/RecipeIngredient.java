@@ -13,7 +13,7 @@ public class RecipeIngredient {
     @TableId(type = IdType.AUTO)
     private Long id;
     private Long recId;
-    private Long ingId;
+    private String name;
     private Integer number;
     private Integer unit;
     private Integer type;
