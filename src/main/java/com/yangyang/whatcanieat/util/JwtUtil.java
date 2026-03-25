@@ -1,6 +1,7 @@
 package com.yangyang.whatcanieat.util;
 
 import com.yangyang.whatcanieat.entity.User;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -50,12 +51,11 @@ public class JwtUtil {
                 .compact();
     }
 
-    public String parseToken(String token) {
+    public Claims parseToken(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(secretKey)
                 .build()
                 .parseClaimsJws(token)
-                .getBody()
-                .getSubject();
+                .getBody();
     }
 }
