@@ -6,9 +6,12 @@ import com.yangyang.whatcanieat.entity.Result;
 import com.yangyang.whatcanieat.entity.User;
 import com.yangyang.whatcanieat.service.UserService;
 import com.yangyang.whatcanieat.util.JwtUtil;
+import io.jsonwebtoken.Claims;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -110,11 +113,25 @@ public class UserController {
         userQueryWrapper
                 .eq("id",id);
         User userInDB = userService.getOne(userQueryWrapper);
-        if(userInDB != null){
+        if(userInDB == null){
             return Result.fail("未查找到用户。");
         }
         //2.返回用户信息
         return Result.ok(userInDB);
+    }
+
+    @PostMapping("/token")
+    public Result<User> userInformationByToken(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userAccount = authentication.getName();
+        QueryWrapper<User> userWrapper = new QueryWrapper<>();
+        userWrapper.eq("account",userAccount);
+        User user = userService.getOne(userWrapper);
+        if (user == null){
+            return Result.fail("用户不存在！");
+        }
+        //2.返回用户信息
+        return Result.ok(user);
     }
 
     /**
