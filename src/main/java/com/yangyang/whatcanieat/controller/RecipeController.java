@@ -105,6 +105,7 @@ public class RecipeController {
         if(recipeInDB == null){
             return Result.fail("没有此菜谱！");
         }
+        recipe.setUpdateTime(LocalDateTime.now());
         //2.修改菜谱
         recipeService.updateById(recipe);
         //3.返回
@@ -175,8 +176,26 @@ public class RecipeController {
     public Result<Page<Recipe>> page(@RequestParam Integer pageNum , @RequestParam Integer pageSize){
         //1.创建分页条件
         Page<Recipe> page = new Page<>(pageNum, pageSize);
+        LambdaQueryWrapper<Recipe> wrapper = new LambdaQueryWrapper<>();
+        wrapper.orderByDesc(Recipe::getUpdateTime);
         //2.分页查询
-        Page<Recipe> recipePage = recipeService.page(page);
+        Page<Recipe> recipePage = recipeService.page(page,wrapper);
+        //3.返回结果
+        return Result.ok(recipePage);
+    }
+
+    @PostMapping("/search/keyword")
+    public Result<Page<Recipe>> keyword(@RequestParam Integer pageNum , @RequestParam Integer pageSize,@RequestParam String keyword){
+        //1.创建分页条件
+        Page<Recipe> page = new Page<>(pageNum, pageSize);
+        LambdaQueryWrapper<Recipe> wrapper = new LambdaQueryWrapper<>();
+        wrapper
+                .like(Recipe::getName,keyword)
+                .or()
+                .like(Recipe::getText, keyword)
+                .orderByDesc(Recipe::getUpdateTime);
+        //2.分页查询
+        Page<Recipe> recipePage = recipeService.page(page,wrapper);
         //3.返回结果
         return Result.ok(recipePage);
     }
