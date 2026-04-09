@@ -2,6 +2,7 @@ package com.yangyang.whatcanieat.controller;
 
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yangyang.whatcanieat.entity.Recipe;
@@ -112,15 +113,15 @@ public class RecipeController {
 
     /**
      * 菜谱删除接口
-     * @param recipe 菜谱信息
+     * @param id 菜谱id
      * @return
      */
     @PostMapping("/delete")
-    public Result<Recipe> delete(@RequestBody Recipe recipe){
+    public Result<Recipe> delete(@RequestParam Long id){
         //1.根据id删除
-        recipeService.removeById(recipe);
+        recipeService.removeById(id);
         //2.返回删除结果
-        return Result.ok(recipe,"删除菜谱成功！");
+        return Result.ok("删除菜谱成功！");
     }
 
     /**
@@ -150,6 +151,18 @@ public class RecipeController {
         Recipe recipe = recipeService.getOne(wrapper);
         //2.返回
         return Result.ok(recipe);
+    }
+
+    @PostMapping("/search/uid")
+    public Result<Page<Recipe>> searchByUid(@RequestParam Long uId,@RequestParam Integer pageNum , @RequestParam Integer pageSize){
+        //1.根据名字搜索匹配菜谱
+        LambdaQueryWrapper<Recipe> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Recipe::getUId,uId);
+        //2.创建分页条件
+        Page<Recipe> page = new Page<>(pageNum, pageSize);
+        Page<Recipe> recipePage = recipeService.page(page, wrapper);
+        //2.返回
+        return Result.ok(recipePage);
     }
 
     /**

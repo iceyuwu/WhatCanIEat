@@ -44,7 +44,7 @@ public class JwtUtil {
 
         return Jwts.builder()
                 .setClaims(claims)
-                .setSubject(user.getName())
+                .setSubject(user.getAccount())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60))
                 .signWith(secretKey, SignatureAlgorithm.HS256)

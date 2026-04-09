@@ -29,9 +29,10 @@ public class RecipeIngredientController {
     @PostMapping("/add")
     public Result<List<RecipeIngredient>> add(@RequestBody List<RecipeIngredient> riList ){
         //删除旧原料
-        Long recId = riList.getFirst().getId();
+        Long recId = riList.getFirst().getRecId();
         LambdaQueryWrapper<RecipeIngredient> removeWrapper = new LambdaQueryWrapper<>();
         removeWrapper.eq(RecipeIngredient::getRecId,recId);
+        recipeIngredientService.remove(removeWrapper);
         //0.设置时间
         LocalDateTime now = LocalDateTime.now();
         for (int i = 0; i < riList.size(); i++) {
